@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .tab {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .tab button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+        }
+        .tab button:hover {
+            background-color: #0056b3;
+        }
+        .match-list {
+            display: none;
+        }
+        .match-list.active {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function openTab(tabName) {
+            const matchLists = document.getElementsByClassName('match-list');
+            for (let i = 0; i < matchLists.length; i++) {
+                matchLists[i].classList.remove('active');
+            }
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Live Match Data</h1>
+    <div class="tab">
+        <button onclick="openTab('recentMatches')">Recent Matches</button>
+        <button onclick="openTab('upcomingMatches')">Upcoming Matches</button>
+    </div>
+
+    <div id="recentMatches" class="match-list active">
+        <h2>Recent Matches</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Format</th>
+                    <th>Result</th>
+                    <th>Venue</th>
+                    <th>Team A</th>
+                    <th>Team A Score</th>
+                    <th>Team B</th>
+                    <th>Team B Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in matches %}
+                    {% if match.status_str == "Completed" %}
+                    <tr>
+                        <td>{{ match.title }}</td>
+                        <td>{{ match.format_str }}</td>
+                        <td>{{ match.result }}</td>
+                        <td>{{ match.venue.name }}</td>
+                        <td>{{ match.teama.short_name }}</td>
+                        <td>{{ match.teama.scores }}</td>
+                        <td>{{ match.teamb.short_name }}</td>
+                        <td>{{ match.teamb.scores }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="upcomingMatches" class="match-list">
+        <h2>Upcoming Matches</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Format</th>
+                    <th>Start Date</th>
+                    <th>Venue</th>
+                    <th>Team A</th>
+                    <th>Team B</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for match in matches %}
+                    {% if match.status_str == "Not Started" %}
+                    <tr>
+                        <td>{{ match.title }}</td>
+                        <td>{{ match.format_str }}</td>
+                        <td>{{ match.date_start }}</td>
+                        <td>{{ match.venue.name }}</td>
+                        <td>{{ match.teama.short_name }}</td>
+                        <td>{{ match.teamb.short_name }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
