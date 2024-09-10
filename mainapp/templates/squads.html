@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .team {
+            margin: 20px 0;
+        }
+        .team-logo {
+            width: 50px;
+            height: 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Squads for Competition ID {{ competition_id }}</h1>
+
+    {% for team in squads %}
+    <div class="team">
+        <h2>
+            <img class="team-logo" src="{{ team.team_logo }}" alt="{{ team.team_name }} Logo">
+            {{ team.team_name }}
+        </h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Player Name</th>
+                    <th>Playing Role</th>
+                    <th>Batting Style</th>
+                    <th>Bowling Style</th>
+                    <th>Social Media</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in team.players %}
+                <tr>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.playing_role }}</td>
+                    <td>{{ player.batting_style }}</td>
+                    <td>{{ player.bowling_style }}</td>
+                    <td>
+                        {% if player.social_media.facebook %}
+                        <a href="{{ player.social_media.facebook }}" target="_blank">Facebook</a><br>
+                        {% endif %}
+                        {% if player.social_media.twitter %}
+                        <a href="{{ player.social_media.twitter }}" target="_blank">Twitter</a><br>
+                        {% endif %}
+                        {% if player.social_media.instagram %}
+                        <a href="{{ player.social_media.instagram }}" target="_blank">Instagram</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+    
+</div>
+
+</body>
+</html>
